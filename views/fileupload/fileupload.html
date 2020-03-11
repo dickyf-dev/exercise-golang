@@ -1,0 +1,89 @@
+<div id="sample"></div>
+<form id="user-form" method="post" action="/upload" >
+    <input required multiple id="upload-file" type="file" />
+    <br />
+    <button id="btn-upload" type="submit">Upload!</button>
+</form>
+
+<ul id="list-files"></ul>
+<script>
+
+    viewModel.getData = function () {
+        ajaxPost('/fileupload/getjson', null, function (res) {
+            $('#sample').html(JSON.stringify(res))
+        })
+    }
+
+    $(function () {
+        viewModel.getData()
+    })
+    $(function () {
+        // javascript code goes here
+        $("#user-form").on("submit", function (e) {
+            e.preventDefault();
+
+            var $self = $(this);
+            var files = $("#upload-file")[0].files;
+            var formData = new FormData();
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append("files", files[i]);
+            }
+
+            $.ajax({
+                url: $self.attr("action"),
+                type: $self.attr("method"),
+                data: formData,
+                processData: false,
+                contentType: false,
+            }).then(function (res) {
+                alert(res);
+                $("#user-form").trigger("reset");
+            }).catch(function (a) {
+                alert("ERROR: " + a.responseText);
+            });
+        });
+    });
+
+    // javascript code goes here
+    function Yo() {
+        var self = this;
+        var $ul = document.getElementById("list-files");
+
+        var renderData = function (res) {
+            res.forEach(function (each) {
+                var $li = document.createElement("li");
+                var $a = document.createElement("a");
+
+                $li.innerText = "link : ";
+                $li.appendChild($a);
+                $ul.appendChild($li);
+
+                $a.href = "/download?path=" + encodeURI(each.path);
+                $a.innerText = "http://127.0.0.1/files/" + each.filename;
+                $a.target = "_blank";
+            });
+        };
+
+        var getAllListFiles = function () {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/list-files");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var json = JSON.parse(xhr.responseText);
+                    renderData(json);
+                }
+            };
+            xhr.send();
+        };
+
+        self.init = function () {
+            getAllListFiles();
+        };
+    };
+    window.onload = function () {
+        new Yo().init();
+    };
+
+
+</script>

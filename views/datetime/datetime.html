@@ -1,0 +1,62 @@
+<div id="sample"></div>
+<button id="check">Check Time!</button>
+<br>
+<br>
+<form id="user-form" method="post" action="/datetime/save">
+        <input id="req" type="text" width="100px" name="time" required>
+    <br>
+    <button id="posted">+ Half of Day</button>
+</form>
+
+<p id="res1"></p>
+<p class="message"></p>
+<button id="reset">Reset</button>
+
+<script>
+    $(document).ready(function(){
+        $('#check').click(function(){
+
+            ajaxPost('/datetime/getjson', null, function (res) {
+                $('#req').val(function () {
+                    return this.value + res
+                    })
+            })
+
+        });
+    });
+
+    $(function () {
+        viewModel.getData()
+    })
+    $(function () {
+        $("#user-form").on("submit", function (e) {
+            e.preventDefault();
+            // console.log(this);
+            var $self = $(this);
+            var payload = JSON.stringify({
+                Time : $('[name="time"]').val(),
+            });
+
+            $.ajax({
+                url: $self.attr("action"),
+                type: $self.attr("method"),
+                data: payload,
+                contentType: 'application/json',
+            }).then(function (res) {
+                // viewModel.getData = function () {
+                    ajaxPost('/datetime/save', null, function (res) {
+                        $('#res1').html(JSON.stringify(res))
+                    })
+                // }
+            }).catch(function (a) {
+                alert("ERROR: " + a.responseText);
+            });
+        });
+
+        $(document).ready(function () {
+            $('#reset').click(function() {
+                location.reload();
+            });
+        })
+    });
+</script>

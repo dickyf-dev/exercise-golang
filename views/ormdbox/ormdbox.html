@@ -1,0 +1,45 @@
+<div id="sample"></div>
+
+<form id="user-form" method="post" action="/ormdbox/getjson">
+    <input type="text" name="Name" required placeholder="Nama">
+    <br> <br>
+    <input type="date" name="Birthday" required placeholder="Tanggal Lahir">
+    <br> <br>
+    <input type="text" name="Parents1" required placeholder="Nama Ayah">
+    <br> <br>
+    <input type="text" name="Parents2" required placeholder="Nama Ibu">
+    <br> <br>
+    <button class="button" >Submit</button>
+</form>
+<p class="message"></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script>
+    $(function () {
+        $("#user-form").on("submit", function (e) {
+            e.preventDefault();
+
+            var $self = $(this);
+            var payload = JSON.stringify({
+                Name : $('[name="Name"]').val(),
+                Birthday : moment($('[name="Birthday"]').val(),'YYYY-MM-DD'),
+                Parents : [$('[name="Parents1"]').val(),
+                    $('[name="Parents2"]').val(),]
+            });
+
+            $.ajax({
+                url: $self.attr("action"),
+                type: $self.attr("method"),
+                data: payload,
+                contentType: 'application/json',
+            }).then(function (res) {
+                // $(".message").text("Success Insert Data");
+                alert("Success");
+                location.reload();
+            }).catch(function (a) {
+                alert("ERROR: " + a.responseText);
+            });x
+        });
+    });
+
+</script>

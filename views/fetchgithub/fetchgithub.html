@@ -1,0 +1,42 @@
+<div id="sample"></div>
+<form id="user-form" method="post" action="/fetchgithub/save">
+    <input id="req" type="text" width="100px" name="login" required>
+    <br>
+    <button id="posted">Check !</button>
+</form>
+<p class="message"></p>
+<p id="res1"></p>
+<br>
+<button id="reset">Reset</button>
+
+<script>
+
+    $(function () {
+        $("#user-form").on("submit", function (e) {
+            e.preventDefault();
+            // console.log(this);
+            var $self = $(this);
+            var payload = JSON.stringify({
+                Login : $('[name="login"]').val(),
+            });
+
+            $.ajax({
+                url: $self.attr("action"),
+                type: $self.attr("method"),
+                data: payload,
+                contentType: 'application/json',
+            }).then(function (res) {
+                    $('#res1').html(JSON.stringify(res))
+            }).catch(function (a) {
+                alert("ERROR: " + a.responseText);
+            });
+        });
+
+        $(document).ready(function () {
+            $('#reset').click(function() {
+                location.reload();
+            });
+        })
+    });
+
+</script>

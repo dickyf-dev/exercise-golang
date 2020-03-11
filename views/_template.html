@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/111863/perlin.js'></script>
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/111863/Tone.min.js'></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+        <script>
+            var viewModel = {}
+            function ajaxPost(url, payload, callback) {
+                jQuery.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(payload),
+                    success: callback,
+                    dataType: "json",
+                    contentType: "application/json",
+                    processData: false
+                })
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+            Page Menu:
+            <ul>
+                <li>
+                    <a href="/knotbasic/resajaxs">Excercise 1</a>
+                </li>
+                <li>
+                    <a href="/datetime/resajax">Excercise 2</a>
+                </li>
+                <li>
+                    <a href="/ormdbox/ormdbox">Excercise 3</a>
+                </li>
+                <li>
+                    <a href="/fileupload/fileupload">Excercise 4</a>
+                </li>
+                <li>
+                    <a href="/perlin/perlin">Excercise 5</a>
+                </li>
+                <li>
+                    <a href="/perlinv2/perlinv2">Excercise 5 v.2</a>
+                </li>
+                <li>
+                    <a href="/fetchgithub/fetchgithub">Excercise 6</a>
+                </li>
+                <li>
+                    <a href="/goroutine/goroutine">Goroutine</a>
+                </li>
+
+                <li>
+                    <a href="/datetime/knockout">ajax knockout example</a>
+                </li>
+            </ul>
+        </div>
+{{/*        <div>*/}}
+{{/*            JSON example Menu:*/}}
+{{/*            <ul>*/}}
+{{/*                <li>*/}}
+{{/*                    <a href="/knotbasic/knotbasicsamplejson">/message/samplejson</a>*/}}
+{{/*                </li>*/}}
+{{/*            </ul>*/}}
+{{/*        </div>*/}}
+
+        {{.Content}}
+
+        <script>
+        ko.applyBindings(viewModel)
+        </script>
+    </body>
+</html>

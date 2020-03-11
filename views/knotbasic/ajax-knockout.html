@@ -1,0 +1,16 @@
+<div data-bind="foreach: viewModel.data">
+    <div data-bind="text: $data.date"></div>
+</div>
+
+<script>
+viewModel.data = ko.observableArray([])
+viewModel.getData = function () {
+    ajaxPost('/knotbasic/resknockout', null, function (res) {
+        viewModel.data(res)
+    })
+}
+
+$(function () {
+    viewModel.getData()
+})
+</script>

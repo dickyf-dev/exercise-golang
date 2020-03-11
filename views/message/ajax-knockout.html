@@ -1,0 +1,16 @@
+<div data-bind="foreach: viewModel.data">
+    <div data-bind="text: $data.name"></div>
+</div>
+
+<script>
+viewModel.data = ko.observableArray([])
+viewModel.getData = function () {
+    ajaxPost('/message/samplejson', null, function (res) {
+        viewModel.data(res)
+    })
+}
+
+$(function () {
+    viewModel.getData()
+})
+</script>

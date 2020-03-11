@@ -1,0 +1,13 @@
+<div id="sample"></div>
+
+<script>
+viewModel.getData = function () {
+    ajaxPost('/message/samplejson', null, function (res) {
+        $('#sample').html(JSON.stringify(res))
+    })
+}
+
+$(function () {
+    viewModel.getData()
+})
+</script>
